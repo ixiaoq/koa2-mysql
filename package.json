@@ -5,7 +5,8 @@
   "author": "ixiaoq.cn",
   "license": "MIT",
   "scripts": {
-    "dev": "yarn run dev_server",
+    "sql": "cls && node init_sql",
+    "dev": "cls && yarn run dev_server",
     "dev_server": "nodemon --harmony ./server/server.js"
   },
   "dependencies": {

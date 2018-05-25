@@ -4,16 +4,27 @@ const bodyparser = require('koa-bodyparser');
 const static = require('koa-static');
 const logger = require('koa-logger');
 
-const config = require('../config');
-const router = require('./routers');
+const { PORT } = require('../config');
+
+const { restify } = require('./utils/rest');
+const controllers = require('./utils/controllers');
 
 const app = new Koa();
 
+// 日志中间件
+app.use(logger());
+// body解析中间件
+app.use(bodyparser());
 
-app.use(router.routes()).use(router.allowedMethods());
+// 静态资源
+app.use(static(path.join(__dirname, '/../static')))
 
-app.listen(config.port, () => {
-    console.log(`server is running port ${config.port}`);
+app.use(restify());
+
+app.use(controllers());
+
+app.listen(PORT, () => {
+    console.log(`server is running port ${PORT}`);
 });
 
 

@@ -1,1 +1,1 @@
-# koa2-react-mysql
+# koa2-mysql
