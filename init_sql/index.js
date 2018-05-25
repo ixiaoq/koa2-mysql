@@ -1,32 +1,35 @@
 const path = require('path');
 const fs = require('fs');
 
-async function isFiles(basePath) {
-    return new Promise((resolve, reject) => {
-        fs.stat(basePath, (err, stat) => {
-            if (err) {
-                reject(err);
-            } else {
-                
-                resolve(stat.isFile());
-            }
-        });
-    })
-}
-
 let basePath = path.resolve(__dirname, `./sql`);
 
+// 遍历文件夹，过滤出sql文件路径
 function getFilePathMap(basePath) {
     let files = fs.readdirSync(basePath);
-    let fileList = {};
+    let fileList = [];
 
-    for (let [i, file] of files.entries()) {
+    for (let file of files) {
         if (file.endsWith('.sql')) {
-            
+            let filePath = path.resolve(basePath, file);
+            fileList.push(filePath);
         }
     }
-    
+
     return fileList;
 }
 
-getFilePathMap(basePath);
+// 获取sql文件内容
+function getFileContent() {
+    let fileList = getFilePathMap(basePath);
+
+    let sqlContentMap = {};
+
+    for (let filePath in fileList) {
+        fs.readFileSync(filePath, 'binary');
+    }
+    
+}
+
+export default = {
+    getFileContent
+}
