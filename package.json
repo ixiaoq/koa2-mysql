@@ -6,8 +6,8 @@
   "license": "MIT",
   "scripts": {
     "sql": "cls && node init_sql",
-    "dev": "cls && yarn run dev_server",
-    "dev_server": "nodemon --harmony ./server/server.js"
+    "start": "cls && yarn run dev_server",
+    "dev_server": "nodemon --harmony ./server/app.js"
   },
   "dependencies": {
     "koa": "^2.5.1",

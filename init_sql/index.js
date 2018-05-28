@@ -1,35 +1,23 @@
-const path = require('path');
-const fs = require('fs');
+const { query } = require("./utils/db");
+const { getFileContent } = require("./utils/get_sql_content");
 
-let basePath = path.resolve(__dirname, `./sql`);
+// 获取所有sql脚本内容
+let sqlContentMap = getFileContent();
 
-// 遍历文件夹，过滤出sql文件路径
-function getFilePathMap(basePath) {
-    let files = fs.readdirSync(basePath);
-    let fileList = [];
+async function creatTables() {
+  for (let sqlItem of sqlContentMap) {
+    let sqlList = sqlItem.split(";");
 
-    for (let file of files) {
-        if (file.endsWith('.sql')) {
-            let filePath = path.resolve(basePath, file);
-            fileList.push(filePath);
+    for (let [i, shell] of sqlList.entries()) {
+      if (shell.trim()) {
+        let result = await query(shell);
+
+        if (result.serverStatus * 1 === 2) {
+          console.log(`第${i+1}条脚本 执行成功！`);
         }
+      }
     }
-
-    return fileList;
+  }
 }
 
-// 获取sql文件内容
-function getFileContent() {
-    let fileList = getFilePathMap(basePath);
-
-    let sqlContentMap = {};
-
-    for (let filePath in fileList) {
-        fs.readFileSync(filePath, 'binary');
-    }
-    
-}
-
-export default = {
-    getFileContent
-}
+creatTables();

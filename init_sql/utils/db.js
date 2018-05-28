@@ -32,4 +32,6 @@ let query = (sql, value) => {
     });
 };
 
-export default query;
+module.exports = {
+    query
+};
