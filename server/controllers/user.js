@@ -15,7 +15,16 @@ module.exports = {
     "GET /api/user/:id": async (ctx, next) => {
         let sql = `SELECT * FROM user_info WHERE id=?`;
 
-        let data = await query(sql, ctx.params.id);
+        let id = ctx.params.id;
+        if (!/^\d+$/g.test(id)) {
+            ctx.rest({
+                success: false,
+                err_msg: "参数不正确"
+            });
+            return;
+        }
+
+        let data = await query(sql, id);
         
         ctx.rest({
             success: true,
